@@ -1,6 +1,9 @@
 ======================================================================
 🌌 ORD-NAR-EXE // CYBER OPERATIONS CENTER v5.0 INSTALLATION GUIDE
 ======================================================================
+Önemli Bilgilendirme,
+
+Ordınar, şu an için yalnızca Windows 11 işletim sistemiyle uyumludur. Windows 10 ve diğer işletim sistemlerine yönelik sürümler, projenin ilerleyen süreçte alacağı etkileşime göre geliştirilecektir.
 
 [TR] KURULUM VE ÇALIŞTIRMA REHBERİ (TÜRKÇE)
 ----------------------------------------------------------------------
@@ -28,6 +31,10 @@ GitHub Üzerinde Canlı Web Sitesi Olarak Yayınlama:
 ----------------------------------------------------------------------
 [EN] INSTALLATION & RUNNING REHBERİ (ENGLISH)
 ----------------------------------------------------------------------
+Important Information,
+
+Ordinar is currently only compatible with Windows 11. Versions for Windows 10 and other operating systems will be developed based on the project's future feedback.
+
 This simulator is a music-driven, map-supported, and multilingual 
 sci-fi web application inspired by military cyber command centers.
 
