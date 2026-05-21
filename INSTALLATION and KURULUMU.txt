@@ -1,0 +1,58 @@
+======================================================================
+🌌 ORD-NAR-EXE // CYBER OPERATIONS CENTER v5.0 INSTALLATION GUIDE
+======================================================================
+
+[TR] KURULUM VE ÇALIŞTIRMA REHBERİ (TÜRKÇE)
+----------------------------------------------------------------------
+Bu simülatör, bilim kurgu filmlerindeki siber operasyon merkezlerinden 
+ilham alan; müzikli, haritalı ve çok dilli bir web uygulamasıdır.
+
+Masaüstünde Çalıştırma (Çevrimdışı / İnternetsiz):
+1. Bilgisayarınızda oluşturduğunuz "index.html" (Brave logolu dosya) dosyasını bulun.
+2. Dosyaya çift tıklayın. Eğer tarayıcı seçimi isterse listeden "Brave" 
+   veya kullandığınız başka bir tarayıcıyı (Chrome/Edge) seçin.
+3. Ekran açıldığında giriş menüsünden dilediğiniz dili (Türkçe, İngilizce vb.) seçin.
+4. Sistem başladığı an arka planda Matrix synth müzikleri ve siber bip sesleri 
+   otomatik olarak çalmaya başlayacaktır.
+
+GitHub Üzerinde Canlı Web Sitesi Olarak Yayınlama:
+1. GitHub (github.com) hesabınıza giriş yapın ve "Ord-nar-exe" deponuza girin.
+2. Üstteki menüden çark simgeli "Settings" (Ayarlar) sekmesine tıklayın.
+3. Sol tarafta açılan dikey menüden "Pages" seçeneğini bulun ve tıklayın.
+4. Sayfanın ortasında "Branch" başlığı altında "None" yazan butona tıklayıp "main" yapın.
+5. Hemen yanındaki "Save" (Kaydet) butonuna basın.
+6. 1-2 dakika bekleyip sayfayı yenilediğinizde, ekranın en üstünde size özel 
+   canlı internet sitesi linkiniz (https://github.io) görünecektir.
+
+
+----------------------------------------------------------------------
+[EN] INSTALLATION & RUNNING REHBERİ (ENGLISH)
+----------------------------------------------------------------------
+This simulator is a music-driven, map-supported, and multilingual 
+sci-fi web application inspired by military cyber command centers.
+
+Running on Your Desktop (Offline / No Internet Needed):
+1. Locate the "index.html" file (the one with the Brave/Browser logo) on your PC.
+2. Double-click the file. If Windows asks for a program, select "Brave" 
+   or your preferred web browser (Chrome/Edge) from the list.
+3. Once the welcome screen loads, click on your preferred global language.
+4. As soon as the system initializes, the Matrix-style background synth music 
+   and cyber beep tones will play automatically.
+
+Deploying as a Live Website via GitHub Pages:
+1. Log into your GitHub account and navigate to your "Ord-nar-exe" repository.
+2. Click on the "Settings" (gear icon) tab at the top of the page.
+3. From the left-hand sidebar menu, locate and click on "Pages".
+4. Under the "Branch" section, click the dropdown menu that says "None" and select "main".
+5. Click the "Save" button right next to it.
+6. Wait 1 or 2 minutes, then refresh the page. Your custom live URL 
+   (https://github.io) will appear in a green box at the top.
+
+======================================================================
+SYSTEM FEATURES / SİSTEM ÖZELLİKLERİ:
+* Animated 3D Saturn Ring System (Dönen 3D Satürn Halkaları)
+* Tactical Radar scanning World Map (Radar Taramalı Askeri Dünya Haritası)
+* Live Fluctuating CPU/GPU/RAM Metrics (Canlı Dalgalanan Donanım Sayaçları)
+* 6 Global Language Support (6 Farklı Küresel Dil Desteği)
+* Autonomous Web Audio Engine (Frekans Tabanlı Yapay Müzik Motoru)
+======================================================================
