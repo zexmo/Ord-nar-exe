@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SİBER OPERASYON MERKEZİ v5.0</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body {
+            background-color: #020202;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 40px 1fr 40px;
+            text-shadow: 0 0 4px rgba(0, 255, 102, 0.6);
+        }
+        #overlay {
+            position: fixed; top:0; left:0; width:100vw; height:100vh;
+            background: rgba(2,2,2,0.98); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 3px solid #00ff66;
+        }
+        #overlay h1 { font-size: 2.2rem; margin-bottom: 30px; animation: blink 1.2s infinite; letter-spacing: 2px; }
+        .lang-grid { display: grid; grid-template-columns: repeat(3, 130px); gap: 15px; }
+        .lang-btn {
+            background: transparent; border: 2px solid #00ff66; color: #00ff66;
+            padding: 12px; font-size: 0.95rem; font-family: inherit; cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,255,102,0.2); transition: 0.2s; font-weight: bold;
+        }
+        .lang-btn:hover { background: #00ff66; color: #000; box-shadow: 0 0 20px #00ff66; transform: scale(1.05); }
+        header {
+            border-bottom: 1px solid #00ff66; display: flex; justify-content: space-between;
+            align-items: center; padding: 0 20px; font-weight: bold; background: rgba(0,15,5,0.7);
+        }
+        main { display: grid; grid-template-columns: 340px 1fr 340px; gap: 10px; padding: 10px; height: 100%; overflow: hidden; }
+        footer { border-top: 1px solid #00ff66; display: flex; justify-content: center; align-items: center; font-size: 0.8rem; background: rgba(0,15,5,0.7); }
+        .panel { border: 1px solid rgba(0, 255, 102, 0.4); background: rgba(0, 5, 2, 0.85); box-shadow: inset 0 0 20px rgba(0, 255, 102, 0.15); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .panel-header { background: rgba(0, 255, 102, 0.2); padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-bottom: 1px solid rgba(0, 255, 102, 0.4); display: flex; justify-content: space-between; letter-spacing: 1px; }
+        .panel-content { padding: 12px; flex: 1; overflow-y: auto; font-size: 0.85rem; }
+        #map-canvas { width: 100%; height: 160px; background: #000; border: 1px solid rgba(0,255,102,0.3); margin-bottom: 12px; }
+        .info-row { margin-bottom: 10px; display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(0,255,102,0.2); padding-bottom: 4px; }
+        .info-val { color: #ffffff; font-weight: bold; }
+        .stat-bar { width: 100%; height: 14px; border: 1px solid #00ff66; margin-top: 4px; margin-bottom: 14px; position: relative; background: rgba(0,0,0,0.5); }
+        .stat-fill { height: 100%; background: #00ff66; width: 0%; transition: width 0.3s ease; box-shadow: 0 0 10px #00ff66; }
+        #console-log { font-size: 0.75rem; color: #00ffaa; height: 210px; border: 1px solid rgba(0,255,102,0.3); padding: 8px; background: #000; overflow-y: auto; }
+        .center-layout { display: grid; grid-template-rows: 1fr 130px; gap: 10px; }
+        #saturn-container { position: relative; background: #000; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 255, 102, 0.4); }
+        .saturn-system { position: relative; width: 340px; height: 340px; display: flex; justify-content: center; align-items: center; }
+        .saturn-planet { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #444, #151515 70%, #000); border: 2px solid #00ff66; border-radius: 50%; box-shadow: 0 0 35px rgba(0, 255, 102, 0.4); z-index: 2; }
+        .ring { position: absolute; border-radius: 50%; border: 5px solid transparent; border-top: 5px solid #00ff66; border-bottom: 5px solid rgba(0, 255, 102, 0.4); transform: rotateX(75deg); animation: spin 6s linear infinite; z-index: 3; }
+        .ring-1 { width: 270px; height: 270px; animation-duration: 9s; }
+        .ring-2 { width: 210px; height: 210px; animation-duration: 6s; animation-direction: reverse; border-top-color: #00ffaa; }
+        .ring-3 { width: 160px; height: 160px; animation-duration: 4.5s; }
+        #terminal-input-zone { background: #000; border: 1px solid rgba(0,255,102,0.4); padding: 12px; font-size: 0.85rem; display: flex; flex-direction: column; justify-content: center; }
+        .terminal-row { display: flex; align-items: center; margin-top: 5px; }
+        .terminal-prompt { color: #00ff66; margin-right: 8px; font-weight: bold; }
+        .terminal-cmd { background: transparent; border: none; color: #fff; font-family: inherit; font-size: inherit; outline: none; flex: 1; caret-color: #00ff66; }
+        @keyframes spin { 0% { transform: rotateX(75deg) rotateZ(0deg); } 100% { transform: rotateX(75deg) rotateZ(360deg); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #00ff66; border-radius: 3px; }
+    </style>
+</head>
+<body>
+      <!-- Başlangıç Kilidi ve Dil Seçimi -->
+    <div id="overlay">
+        <h1 id="main-title">SİSTEM ERİŞİMİ ENGELLENDİ / ACCESS DENIED</h1>
+        <div class="lang-grid">
+            <button class="lang-btn" onclick="startSystem('tr')">TURKÇE</button>
+            <button class="lang-btn" onclick="startSystem('en')">ENGLISH</button>
+            <button class="lang-btn" onclick="startSystem('de')">DEUTSCH</button>
+            <button class="lang-btn" onclick="startSystem('ru')">РУССКИЙ</button>
+            <button class="lang-btn" onclick="startSystem('fr')">FRANÇAIS</button>
+            <button class="lang-btn" onclick="startSystem('zh')">中文</button>
+        </div>
+    </div>
+
+    <!-- Üst Kontrol Barı -->
+    <header>
+        <div id="top-title">⚡ CYBER-NET QUANTUM NODE // INITIALIZING...</div>
+        <div id="top-timer">SYS_TIME: 00:00:00</div>
+    </header>
+
+    <!-- Ana Panel Düzeni -->
+    <main>
+        <!-- Sol Bölüm: Coğrafi Analiz -->
+        <div class="panel">
+            <div class="panel-header"><span id="h-geo">🌍 KONUM VE HEDEF ANALİZİ</span><span>[SECURE]</span></div>
+            <div class="panel-content">
+                <canvas id="map-canvas"></canvas>
+                <div class="info-row"><span id="l-time">SİSTEM SAATİ:</span><span id="lbl-time" class="info-val">00:00:00</span></div>
+                <div class="info-row"><span id="l-ip">IP ADRESİ:</span><span id="lbl-ip" class="info-val">185.228.168.95</span></div>
+                <div class="info-row"><span id="l-proxy">PROXY SUNUCU:</span><span id="lbl-geo" class="info-val">Quantum_Node_4</span></div>
+                <div class="info-row"><span id="l-coord">KOORDİNAT:</span><span class="info-val">41.0082° N, 28.9784° E</span></div>
+                <div class="info-row"><span id="l-enc">ŞİFRELEME:</span><span class="info-val" style="color:#ff3333;">AES-256-GCM</span></div>
+                <div class="info-row"><span id="l-vpn">VPN DURUMU:</span><span class="info-val" style="color:#00ffaa;">TUNNEL_ACTIVE</span></div>
+            </div>
+        </div>
+
+        <!-- Orta Bölüm: Satürn ve Giriş Terminali -->
+        <div class="center-layout">
+            <div id="saturn-container" class="panel">
+                <div class="panel-header" id="h-saturn" style="position:absolute; top:0; width:100%; z-index:10;">🌌 MERKEZİ KÜTLE: SATURN_CORE_PROT</div>
+                <div class="saturn-system">
+                    <div class="saturn-planet"></div>
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                </div>
+            </div>
+            
+            <div id="terminal-input-zone">
+                <div id="term-hint" style="color: #666; font-size: 0.75rem; margin-bottom: 4px;">Komut Girin (Örn: "hack", "clear", "scan", "bypass")</div>
+                <div class="terminal-row">
+                    <span class="terminal-prompt">root@cyber_node:~#</span>
+                    <input type="text" id="term-input" class="terminal-cmd" autocomplete="off" disabled>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Bölüm: Sistem Kaynakları -->
+        <div class="panel">
+            <div class="panel-header"><span id="h-sys">📊 SİSTEM KAYNAKLARI</span><span>[LIVE]</span></div>
+            <div class="panel-content">
+                <div class="info-row"><span id="l-cpu">CPU KULLANIMI:</span><span id="txt-cpu" class="info-val">0%</span></div>
+                <div class="stat-bar"><div id="bar-cpu" class="stat-fill"></div></div>
+
+                <div class="info-row"><span id="l-gpu">GPU ÇEKİRDEĞİ:</span><span id="txt-gpu" class="info-val">0%</span></div>
+                <div class="stat-bar"><div id="bar-gpu" class="stat-fill"></div></div>
+
+                <div class="info-row"><span id="l-ram">RAM KAPASİTE:</span><span id="txt-ram" class="info-val">0 MB</span></div>
+                <div class="stat-bar"><div id="bar-ram" class="stat-fill"></div></div>
+
+                <div class="panel-header" id="h-stream" style="margin: 10px -10px 5px -10px; font-size:0.75rem;">🛰️ CANLI SİBER AKIŞ</div>
+                <div id="console-log"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-text">DECRYPTOR ALGORITHM ACTIVE // WARNING: UNAUTHORIZED ACCESS DETECTED BY ANTIVIRUS</footer>
+
+    <script>
+        // Çok Dilli Sözlük Veritabanı
+        const i18n = {
+            tr: {
+                topTitle: "⚡ SİBER-NET KUANTUM DÜĞÜMÜ // ÇEVRİMİÇİ", geo: "🌍 KONUM VE HEDEF ANALİZİ", saturn: "🌌 MERKEZİ KÜTLE: SATURN_CORE_PROT",
+                sys: "📊 SİSTEM KAYNAKLARI", stream: "🛰️ CANLI SİBER AKIŞ", time: "SİSTEM SAATİ:", ip: "IP ADRESİ:",
+                proxy: "PROXY SUNUCU:", coord: "KOORDİNAT:", enc: "ŞİFRELEME:", vpn: "VPN DURUMU:",
+                cpu: "CPU KULLANIMI:", gpu: "GPU ÇEKİRDEĞİ:", ram: "RAM KAPASİTE:", hint: "Komut Girin ('hack', 'scan', 'bypass', 'clear')",
+                footer: "DEKRİPTÖR ALGORİTMASI AKTİF // UYARI: YETKİSİZ ERİŞİM TESPİT EDİLDİ",
+                logs: ["BAĞLANTI KURULUYOR...", "GÜVENLİK DUVARI AŞILIYOR: %45", "VERİ TABANI ENJEKSİYONU BAŞLADI", "ŞİFRELEME ÇÖZÜLÜYOR...", "LOG DOSYALARI TEMİZLENİYOR..."],
+                cmdHack: "!!! SATÜRN ÇEKİRDEĞİNE SİBER SALDIRI BAŞLATILDI !!!", cmdScan: "PROXY SUNUCULARI TARANIYOR...", cmdBypass: "GÜVENLİK DUVARI DEVRE DIŞI BIRAKILDI."
+            },
+            en: {
+                topTitle: "⚡ CYBER-NET QUANTUM NODE // ON-LINE", geo: "🌍 LOCATION & TARGET ANALYSIS", saturn: "🌌 CENTRAL MASS: SATURN_CORE_PROT",
+                sys: "📊 SYSTEM RESOURCES", stream: "🛰️ LIVE CYBER STREAM", time: "SYSTEM TIME:", ip: "IP ADDRESS:",
+                proxy: "PROXY SERVER:", coord: "COORDINATES:", enc: "ENCRYPTION:", vpn: "VPN STATUS:",
+                cpu: "CPU UTILITY:", gpu: "GPU CORE LOAD:", ram: "RAM CAPACITY:", hint: "Enter Command ('hack', 'scan', 'bypass', 'clear')",
+                footer: "DECRYPTOR ALGORITHM ACTIVE // WARNING: UNAUTHORIZED ACCESS DETECTED",
+                logs: ["ESTABLISHING CONNECTION...", "BYPASSING FIREWALL: 45%", "DATABASE INJECTION STARTED", "DECRYPTING SHA-256 HASH...", "WIPING LOG FILES TO PREVENT DETECTION..."],
+                cmdHack: "!!! CYBER ATTACK INITIATED ON SATURN CORE !!!", cmdScan: "SCANNING FOR PROXY NODES...", cmdBypass: "FIREWALL SECURITY BYPASSED SUCCESSFULLY."
+            },
+            de: {
+                topTitle: "⚡ CYBER-NET QUANTUM-KNOTEN // ONLINE", geo: "🌍 STANDORT- & ZIELANALYSE", saturn: "🌌 ZENTRALE MASSE: SATURN_CORE_PROT",
+                sys: "📊 SYSTEMRESSOURCEN", stream: "🛰️ LIVE-CYBER-STREAM", time: "SYSTEMZEIT:", ip: "IP-ADRESSE:",
+                proxy: "PROXY-SERVER:", coord: "KOORDINATEN:", enc: "VERSCHLÜSSELUNG:", vpn: "VPN-STATUS:",
+                cpu: "CPU-AUSLASTUNG:", gpu: "GPU-KERNAUSLASTUNG:", ram: "RAM-KAPAZITÄT:", hint: "Befehl eingeben ('hack', 'scan', 'bypass', 'clear')",
+                footer: "DECRYPTOR-ALGORITHMUS AKTIV // WARNUNG: UNBEFUGTER ZUGRIFF ERKANNT",
+                logs: ["VERBINDUNG WIRD HERGESTELLT...", "FIREWALL WIRD UMGEHEN: 45%", "DATENBANKINJEKTION GESTARTET", "ENTSCHLÜSSELUNG LÄUFT...", "LOGDATEIEN WERDEN GELÖSCHT..."],
+                cmdHack: "!!! CYBERANGRIFF AUF SATURN-KERN GESTARTET !!!", cmdScan: "SUCHE NACH PROXY-KNOTEN...", cmdBypass: "FIREWALL-SICHERHEIT ERFOLGREICH UMGEHEN."
+            },
+            ru: {
+                topTitle: "⚡ КIБЕР-СЕТЬ КВАНТОВЫЙ УЗЕЛ // В СЕТИ", geo: "🌍 АНАЛИЗ ПОЛОЖЕНИЯ И ЦЕЛИ", saturn: "🌌 ЦЕНТРАЛЬНАЯ МАССА: SATURN_CORE_PROT",
+                sys: "📊 СИСТЕМНЫЕ РЕСURСЫ", stream: "🛰️ ЖИВОЙ КИБЕР-ПОТОК", time: "ВРЕМЯ СИСТЕМЫ:", ip: "IP-АДРЕС:",
+                proxy: "ПРОКСИ-СЕРВЕР:", coord: "КООРДИНАТЫ:", enc: "ШИФРОВАНИЕ:", vpn: "СТАТУС VPN:",
+                cpu: "ЗАГРУЗКА ЦП:", gpu: "ЗАГРУЗКА ГП:", ram: "ПАМЯТЬ ОЗУ:", hint: "Введите команду ('hack', 'scan', 'bypass', 'clear')",
+                footer: "АЛГОРИТМ ДЕШИФРАТОРА АКТИВЕН // ВНИМАНИЕ: ОБНАРУЖЕН НЕСАНКЦИОНИРОВАННЫЙ ДОСТУП",
+                logs: ["УСТАНОВКА СОЕДИНЕНИЯ...", "ОБХОД БРАНДМАУЭРА: 45%", "ИНЪЕКЦИЯ БАЗЫ ДАННЫХ ЗАПУЩЕНА", "РАСШИФРОВКА ХЕША SHA-256...", "ОЧИСТКА ЛОГ-ФАЙЛОВ ДЛЯ СКРЫТИЯ..."],
+                cmdHack: "!!! АТАКА НА ЯДРО САТУРНА ЗАПУЩЕНА !!!", cmdScan: "СКАНИРОВАНИЕ ПРОКСИ-УЗЛОВ...", cmdBypass: "ЗАЩИТА БРАНДМАУЭРА УСПЕШНО ОБХОДЕНА."
+            },
+            fr: {
+                topTitle: "⚡ NOEUD QUANTIQUE CYBER-NET // EN LIGNE", geo: "🌍 ANALYSE DE LOCALISATION & CIBLE", saturn: "🌌 MASSE CENTRALE: SATURN_CORE_PROT",
+                sys: "📊 RESSOURCES SYSTÈME", stream: "🛰️ FLUX CYBER EN DIRECT", time: "HEURE SYSTÈME:", ip: "ADRESSE IP:",
+                proxy: "SERVEUR PROXY:", coord: "COORDONNÉES:", enc: "CHIFFREMENT:", vpn: "STATUT VPN:",
+                cpu: "UTILISATION CPU:", gpu: "CHARGE CHARGE GPU:", ram: "CAPACITÉ RAM:", hint: "Entrez la commande ('hack', 'scan', 'bypass', 'clear')",
+                footer: "ALGORITHME DÉCRYPTAGE ACTIF // ATTENTION: ACCÈS NON AUTORISÉ DÉTECTÉ",
+                logs: ["CONNEXION EN COURS...", "CONTOURNEMENT DU PARE-FEU: 45%", "INJECTION DE BASE DE DONNÉES", "DÉCRYPTAGE DU HACHAGE...", "EFFACEMENT DES LOGS EN COURS..."],
+                cmdHack: "!!! CYBERATTAQUE INITIÉE SUR LE NOYAU DE SATURNE !!!", cmdScan: "RECHERCHE DE NOEUDS PROXY...", cmdBypass: "PARE-FEU CONTOURNÉ AVEC SUCCÈS."
+            },
+            zh: {
+                topTitle: "⚡ 网络量子节点 // 已上线", geo: "🌍 位置与目标分析", saturn: "🌌 中心质量: SATURN_CORE_PROT",
+                sys: "📊 系统资源", stream: "🛰️ 实时网络流", time: "系统时间:", ip: "IP地址:",
+                proxy: "代理服务器:", coord: "坐标位置:", enc: "加密技术:", vpn: "VPN状态:",
+                cpu: "CPU使用率:", gpu: "GPU核心负载:", ram: "RAM内存容量:", hint: "输入指令 ('hack', 'scan', 'bypass', 'clear')",
+                footer: "解密算法已激活 // 警告：检测到未经授权的访问",
+                logs: ["正在建立连接...", "绕过防火墙: 45%", "数据库注入已 cooperate 开始", "正在解密哈希值...", "正在清除日志文件以防追踪..."],
+                cmdHack: "!!! 针对土星核心的网络攻击已启动 !!!", cmdScan: "正在 scanning 扫描代理节点...", cmdBypass: "防火墙安全墙已被成功绕过。"
+            }
+        };
+        let currentLang = 'tr';
+        // Matrix & Cyberpunk Müzik Motoru (Sıfırdan Frekans Üretimi)
+        let audioCtx;
+        function playMatrixMusic() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Derin Ritmik Bass Döngüsü
+            setInterval(() => {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(55, audioCtx.currentTime); // Kalın Do tonu
+                osc.frequency.exponentialRampToValueAtTime(32, audioCtx.currentTime + 0.45);
+                
+                gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.45);
+            }, 550);
+
+            // Bilim Kurgu Uzay Arka Plan Ses Dalgası (Drone)
+            let droneOsc = audioCtx.createOscillator();
+            let droneGain = audioCtx.createGain();
+            droneOsc.type = 'triangle';
+            droneOsc.frequency.setValueAtTime(110, audioCtx.currentTime);
+            droneGain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            droneOsc.connect(droneGain);
+            droneGain.connect(audioCtx.destination);
+            droneOsc.start();
+
+            // Sinyal Tarama ve Siber Bip Sesleri
+            setInterval(() => {
+                if(Math.random() > 0.35) {
+                    let beep = audioCtx.createOscillator();
+                    let beepGain = audioCtx.createGain();
+                    beep.type = 'sine';
+                    beep.frequency.setValueAtTime(700 + Math.random() * 500, audioCtx.currentTime);
+                    beepGain.gain.setValueAtTime(0.025, audioCtx.currentTime);
+                    beepGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                    beep.connect(beepGain);
+                    beep.connect(audioCtx.destination);
+                    beep.start();
+                    beep.stop(audioCtx.currentTime + 0.12);
+                }
+            }, 350);
+        }
+
+        // Sistemi Dil Seçimiyle Başlatma Fonksiyonu
+        function startSystem(lang) {
+            currentLang = lang;
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('term-input').disabled = false;
+            document.getElementById('term-input').focus();
+            
+            // Dil Çevirilerini Uygula
+            document.getElementById('top-title').innerText = i18n[lang].topTitle;
+            document.getElementById('h-geo').innerText = i18n[lang].geo;
+            document.getElementById('h-saturn').innerText = i18n[lang].saturn;
+            document.getElementById('h-sys').innerText = i18n[lang].sys;
+            document.getElementById('h-stream').innerText = i18n[lang].stream;
+            document.getElementById('l-time').innerText = i18n[lang].time;
+            document.getElementById('l-ip').innerText = i18n[lang].ip;
+            document.getElementById('l-proxy').innerText = i18n[lang].proxy;
+            document.getElementById('l-coord').innerText = i18n[lang].coord;
+            document.getElementById('l-enc').innerText = i18n[lang].enc;
+            document.getElementById('l-vpn').innerText = i18n[lang].vpn;
+            document.getElementById('l-cpu').innerText = i18n[lang].cpu;
+            document.getElementById('l-gpu').innerText = i18n[lang].gpu;
+            document.getElementById('l-ram').innerText = i18n[lang].ram;
+            document.getElementById('term-hint').innerText = i18n[lang].hint;
+            document.getElementById('footer-text').innerText = i18n[lang].footer;
+
+            playMatrixMusic();
+            initAdvancedMap();
+            startHardwareMetrics();
+            startSustainedLogs();
+        }
+
+        // Saat Sayacı
+        setInterval(() => {
+            const timeStr = new Date().toTimeString().split(' ')[0];
+            document.getElementById('top-timer').innerText = `SYS_TIME: ${timeStr}`;
+            document.getElementById('lbl-time').innerText = timeStr;
+        }, 1000);
+
+        // Donanım İstatistik Simülatörü
+        function startHardwareMetrics() {
+            setInterval(() => {
+                let cpu = Math.floor(Math.random() * 26) + 65; // %65-%90
+                document.getElementById('txt-cpu').innerText = `${cpu}%`;
+                document.getElementById('bar-cpu').style.width = `${cpu}%`;
+                
+                let gpu = Math.floor(Math.random() * 21) + 55; // %55-%76
+                document.getElementById('txt-gpu').innerText = `${gpu}%`;
+                document.getElementById('bar-gpu').style.width = `${gpu}%`;
+
+                let ram = Math.floor(Math.random() * 800) + 13200; // MB
+                document.getElementById('txt-ram').innerText = `${ram} MB`;
+                document.getElementById('bar-ram').style.width = `${(ram/16000)*100}%`;
+            }, 750);
+        }
+
+        // Radar Taramalı Canlı Askeri Harita
+        function initAdvancedMap() {
+            const canvas = document.getElementById('map-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            function drawMap() {
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+                
+                // Izgara Çizgileri
+                ctx.strokeStyle = 'rgba(0, 255, 102, 0.15)';
+                ctx.lineWidth = 1;
+                for(let i=0; i<canvas.width; i+=25) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke(); }
+                for(let i=0; i<canvas.height; i+=25) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
+
+                // Temsili Kıtalar
+                ctx.fillStyle = 'rgba(0, 255, 102, 0.08)';
+                ctx.fillRect(40, 25, 90, 45);
+                ctx.fillRect(160, 35, 110, 55);
+                ctx.fillRect(100, 90, 60, 45);
+
+                // Sürekli Dönen Radar Çizgisi
+                let angle = (Date.now() / 800) % (Math.PI * 2);
+                ctx.strokeStyle = 'rgba(0, 255, 102, 0.4)';
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2, canvas.height/2);
+                ctx.lineTo(canvas.width/2 + Math.cos(angle)*120, canvas.height/2 + Math.sin(angle)*120);
+                ctx.stroke();
+
+                // Hedef Noktaları
+                ctx.fillStyle = '#ff2222';
+                ctx.beginPath(); ctx.arc(180, 50, 4, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#ff2222';
+                ctx.beginPath(); ctx.arc(180, 50, (Date.now()/25)%35, 0, Math.PI*2); ctx.stroke();
+
+                requestAnimationFrame(drawMap);
+            }
+            drawMap();
+        }
+
+        // Canlı Sürekli Siber Akış Yönetimi
+        function startSustainedLogs() {
+            const consoleBox = document.getElementById('console-log');
+            setInterval(() => {
+                let pool = i18n[currentLang].logs;
+                let randomLine = pool[Math.floor(Math.random() * pool.length)];
+                let timeStamp = new Date().toLocaleTimeString();
+                
+                // Yapay detaylar ekle
+                if(Math.random() > 0.5) randomLine += ` [PID: ${Math.floor(Math.random()*9000+1000)}]`;
+                
+                consoleBox.innerHTML += `<div>[${timeStamp}] ${randomLine}</div>`;
+                consoleBox.scrollTop = consoleBox.scrollHeight;
+                if(consoleBox.children.length > 20) consoleBox.removeChild(consoleBox.firstChild);
+            }, 1200);
+        }
+
+        // İnteraktif Terminal Komutları Girişi
+        const termInput = document.getElementById('term-input');
+        termInput.addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') {
+                let val = this.value.toLowerCase().trim();
+                const consoleBox = document.getElementById('console-log');
+                let timeStamp = new Date().toLocaleTimeString();
+
+                if(val === 'hack') {
+                    consoleBox.innerHTML += `<div style="color:#ff3333; font-weight:bold;">[${timeStamp}] ${i18n[currentLang].cmdHack}</div>`;
+                } else if(val === 'clear') {
+                    consoleBox.innerHTML = '';
+                } else if(val === 'scan') {
+                    consoleBox.innerHTML += `<div style="color:#ffff00;">[${timeStamp}] ${i18n[currentLang].cmdScan}</div>`;
+                } else if(val === 'bypass') {
+                    consoleBox.innerHTML += `<div style="color:#00ffff;">[${timeStamp}] ${i18n[currentLang].cmdBypass}</div>`;
+                } else if(val !== "") {
+                    consoleBox.innerHTML += `<div>[${timeStamp}] Unknown command: ${val}</div>`;
+                }
+                
+                consoleBox.scrollTop = consoleBox.scrollHeight;
+                this.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
