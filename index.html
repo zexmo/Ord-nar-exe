@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SİBER OPERASYON MERKEZİ v5.0</title>
+    <title>ORD-NAR-EXE // SİBER OPERASYON MERKEZİ v5.5</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body {
-            background-color: #020202;
-            color: #00ff66;
+            background-color: #020202; color: #00ff66;
             font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            height: 100vh;
-            display: grid;
-            grid-template-rows: 40px 1fr 40px;
+            overflow: hidden; height: 100vh;
+            display: grid; grid-template-rows: 40px 1fr 40px;
             text-shadow: 0 0 4px rgba(0, 255, 102, 0.6);
         }
         #overlay {
@@ -64,7 +60,6 @@
     </style>
 </head>
 <body>
-      <!-- Başlangıç Kilidi ve Dil Seçimi -->
     <div id="overlay">
         <h1 id="main-title">SİSTEM ERİŞİMİ ENGELLENDİ / ACCESS DENIED</h1>
         <div class="lang-grid">
@@ -77,15 +72,12 @@
         </div>
     </div>
 
-    <!-- Üst Kontrol Barı -->
     <header>
         <div id="top-title">⚡ CYBER-NET QUANTUM NODE // INITIALIZING...</div>
         <div id="top-timer">SYS_TIME: 00:00:00</div>
     </header>
 
-    <!-- Ana Panel Düzeni -->
     <main>
-        <!-- Sol Bölüm: Coğrafi Analiz -->
         <div class="panel">
             <div class="panel-header"><span id="h-geo">🌍 KONUM VE HEDEF ANALİZİ</span><span>[SECURE]</span></div>
             <div class="panel-content">
@@ -99,7 +91,6 @@
             </div>
         </div>
 
-        <!-- Orta Bölüm: Satürn ve Giriş Terminali -->
         <div class="center-layout">
             <div id="saturn-container" class="panel">
                 <div class="panel-header" id="h-saturn" style="position:absolute; top:0; width:100%; z-index:10;">🌌 MERKEZİ KÜTLE: SATURN_CORE_PROT</div>
@@ -120,7 +111,6 @@
             </div>
         </div>
 
-        <!-- Sağ Bölüm: Sistem Kaynakları -->
         <div class="panel">
             <div class="panel-header"><span id="h-sys">📊 SİSTEM KAYNAKLARI</span><span>[LIVE]</span></div>
             <div class="panel-content">
@@ -142,7 +132,6 @@
     <footer id="footer-text">DECRYPTOR ALGORITHM ACTIVE // WARNING: UNAUTHORIZED ACCESS DETECTED BY ANTIVIRUS</footer>
 
     <script>
-        // Çok Dilli Sözlük Veritabanı
         const i18n = {
             tr: {
                 topTitle: "⚡ SİBER-NET KUANTUM DÜĞÜMÜ // ÇEVRİMİÇİ", geo: "🌍 KONUM VE HEDEF ANALİZİ", saturn: "🌌 MERKEZİ KÜTLE: SATURN_CORE_PROT",
@@ -195,68 +184,45 @@
                 proxy: "代理服务器:", coord: "坐标位置:", enc: "加密技术:", vpn: "VPN状态:",
                 cpu: "CPU使用率:", gpu: "GPU核心负载:", ram: "RAM内存容量:", hint: "输入指令 ('hack', 'scan', 'bypass', 'clear')",
                 footer: "解密算法已激活 // 警告：检测到未经授权的访问",
-                logs: ["正在建立连接...", "绕过防火墙: 45%", "数据库注入已 cooperate 开始", "正在解密哈希值...", "正在清除日志文件以防追踪..."],
-                cmdHack: "!!! 针对土星核心的网络攻击已启动 !!!", cmdScan: "正在 scanning 扫描代理节点...", cmdBypass: "防火墙安全墙已被成功绕过。"
+                logs: ["正在建立连接...", "绕过防火墙: 45%", "数据库注入已开始", "正在解密哈希值...", "正在清除日志文件以防追踪..."],
+                cmdHack: "!!! 针对土星核心的网络攻击已启动 !!!", cmdScan: "正在扫描代理节点...", cmdBypass: "防火墙安全墙已被成功绕过。"
             }
         };
         let currentLang = 'tr';
-        // Matrix & Cyberpunk Müzik Motoru (Sıfırdan Frekans Üretimi)
         let audioCtx;
         function playMatrixMusic() {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Derin Ritmik Bass Döngüsü
-            setInterval(() => {
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(55, audioCtx.currentTime); // Kalın Do tonu
-                osc.frequency.exponentialRampToValueAtTime(32, audioCtx.currentTime + 0.45);
-                
-                gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.45);
-            }, 550);
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let mainTheme = new Audio("azer.mp3"); 
+                mainTheme.loop = true; 
+                mainTheme.volume = 0.65; 
+                mainTheme.play().catch(e => console.log("Ses calma izni bekleniyor..."));
 
-            // Bilim Kurgu Uzay Arka Plan Ses Dalgası (Drone)
-            let droneOsc = audioCtx.createOscillator();
-            let droneGain = audioCtx.createGain();
-            droneOsc.type = 'triangle';
-            droneOsc.frequency.setValueAtTime(110, audioCtx.currentTime);
-            droneGain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-            droneOsc.connect(droneGain);
-            droneGain.connect(audioCtx.destination);
-            droneOsc.start();
-
-            // Sinyal Tarama ve Siber Bip Sesleri
-            setInterval(() => {
-                if(Math.random() > 0.35) {
-                    let beep = audioCtx.createOscillator();
-                    let beepGain = audioCtx.createGain();
-                    beep.type = 'sine';
-                    beep.frequency.setValueAtTime(700 + Math.random() * 500, audioCtx.currentTime);
-                    beepGain.gain.setValueAtTime(0.025, audioCtx.currentTime);
-                    beepGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
-                    beep.connect(beepGain);
-                    beep.connect(audioCtx.destination);
-                    beep.start();
-                    beep.stop(audioCtx.currentTime + 0.12);
-                }
-            }, 350);
+                setInterval(() => {
+                    if(Math.random() > 0.45 && audioCtx) {
+                        let beep = audioCtx.createOscillator();
+                        let beepGain = audioCtx.createGain();
+                        beep.type = 'sine';
+                        beep.frequency.setValueAtTime(500 + Math.random() * 400, audioCtx.currentTime);
+                        beepGain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+                        beepGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                        beep.connect(beepGain);
+                        beep.connect(audioCtx.destination);
+                        beep.start();
+                        beep.stop(audioCtx.currentTime + 0.1);
+                    }
+                }, 450);
+            } catch(err) {
+                console.log("Ses motoru baslatilamadi.");
+            }
         }
 
-        // Sistemi Dil Seçimiyle Başlatma Fonksiyonu
         function startSystem(lang) {
             currentLang = lang;
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('term-input').disabled = false;
             document.getElementById('term-input').focus();
             
-            // Dil Çevirilerini Uygula
             document.getElementById('top-title').innerText = i18n[lang].topTitle;
             document.getElementById('h-geo').innerText = i18n[lang].geo;
             document.getElementById('h-saturn').innerText = i18n[lang].saturn;
@@ -280,53 +246,47 @@
             startSustainedLogs();
         }
 
-        // Saat Sayacı
         setInterval(() => {
-            const timeStr = new Date().toTimeString().split(' ')[0];
-            document.getElementById('top-timer').innerText = `SYS_TIME: ${timeStr}`;
-            document.getElementById('lbl-time').innerText = timeStr;
+            const timeStr = new Date().toTimeString().split(' ');
+            document.getElementById('top-timer').innerText = `SYS_TIME: ${timeStr[0]}`;
+            document.getElementById('lbl-time').innerText = timeStr[0];
         }, 1000);
 
-        // Donanım İstatistik Simülatörü
         function startHardwareMetrics() {
             setInterval(() => {
-                let cpu = Math.floor(Math.random() * 26) + 65; // %65-%90
-                document.getElementById('txt-cpu').innerText = `${cpu}%`;
-                document.getElementById('bar-cpu').style.width = `${cpu}%`;
+                let cpu = Math.floor(Math.random() * 26) + 65;
+                document.getElementById('txt-cpu').innerText = cpu + "%";
+                document.getElementById('bar-cpu').style.width = cpu + "%";
                 
-                let gpu = Math.floor(Math.random() * 21) + 55; // %55-%76
-                document.getElementById('txt-gpu').innerText = `${gpu}%`;
-                document.getElementById('bar-gpu').style.width = `${gpu}%`;
+                let gpu = Math.floor(Math.random() * 21) + 55;
+                document.getElementById('txt-gpu').innerText = gpu + "%";
+                document.getElementById('bar-gpu').style.width = gpu + "%";
 
-                let ram = Math.floor(Math.random() * 800) + 13200; // MB
-                document.getElementById('txt-ram').innerText = `${ram} MB`;
-                document.getElementById('bar-ram').style.width = `${(ram/16000)*100}%`;
+                let ram = Math.floor(Math.random() * 800) + 13200;
+                document.getElementById('txt-ram').innerText = ram + " MB";
+                document.getElementById('bar-ram').style.width = ((ram/16000)*100) + "%";
             }, 750);
         }
 
-        // Radar Taramalı Canlı Askeri Harita
         function initAdvancedMap() {
             const canvas = document.getElementById('map-canvas');
+            if(!canvas) return;
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
 
             function drawMap() {
                 ctx.clearRect(0,0,canvas.width, canvas.height);
-                
-                // Izgara Çizgileri
                 ctx.strokeStyle = 'rgba(0, 255, 102, 0.15)';
                 ctx.lineWidth = 1;
                 for(let i=0; i<canvas.width; i+=25) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke(); }
                 for(let i=0; i<canvas.height; i+=25) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
 
-                // Temsili Kıtalar
                 ctx.fillStyle = 'rgba(0, 255, 102, 0.08)';
                 ctx.fillRect(40, 25, 90, 45);
                 ctx.fillRect(160, 35, 110, 55);
                 ctx.fillRect(100, 90, 60, 45);
 
-                // Sürekli Dönen Radar Çizgisi
                 let angle = (Date.now() / 800) % (Math.PI * 2);
                 ctx.strokeStyle = 'rgba(0, 255, 102, 0.4)';
                 ctx.beginPath();
@@ -334,7 +294,6 @@
                 ctx.lineTo(canvas.width/2 + Math.cos(angle)*120, canvas.height/2 + Math.sin(angle)*120);
                 ctx.stroke();
 
-                // Hedef Noktaları
                 ctx.fillStyle = '#ff2222';
                 ctx.beginPath(); ctx.arc(180, 50, 4, 0, Math.PI*2); ctx.fill();
                 ctx.strokeStyle = '#ff2222';
@@ -345,7 +304,6 @@
             drawMap();
         }
 
-        // Canlı Sürekli Siber Akış Yönetimi
         function startSustainedLogs() {
             const consoleBox = document.getElementById('console-log');
             setInterval(() => {
@@ -353,16 +311,14 @@
                 let randomLine = pool[Math.floor(Math.random() * pool.length)];
                 let timeStamp = new Date().toLocaleTimeString();
                 
-                // Yapay detaylar ekle
-                if(Math.random() > 0.5) randomLine += ` [PID: ${Math.floor(Math.random()*9000+1000)}]`;
+                if(Math.random() > 0.5) randomLine += " [PID: " + Math.floor(Math.random()*9000+1000) + "]";
                 
-                consoleBox.innerHTML += `<div>[${timeStamp}] ${randomLine}</div>`;
+                consoleBox.innerHTML += "<div>[" + timeStamp + "] " + randomLine + "</div>";
                 consoleBox.scrollTop = consoleBox.scrollHeight;
                 if(consoleBox.children.length > 20) consoleBox.removeChild(consoleBox.firstChild);
             }, 1200);
         }
 
-        // İnteraktif Terminal Komutları Girişi
         const termInput = document.getElementById('term-input');
         termInput.addEventListener('keydown', function(e) {
             if(e.key === 'Enter') {
@@ -371,15 +327,15 @@
                 let timeStamp = new Date().toLocaleTimeString();
 
                 if(val === 'hack') {
-                    consoleBox.innerHTML += `<div style="color:#ff3333; font-weight:bold;">[${timeStamp}] ${i18n[currentLang].cmdHack}</div>`;
+                    consoleBox.innerHTML += "<div style='color:#ff3333; font-weight:bold;'>[" + timeStamp + "] " + i18n[currentLang].cmdHack + "</div>";
                 } else if(val === 'clear') {
                     consoleBox.innerHTML = '';
                 } else if(val === 'scan') {
-                    consoleBox.innerHTML += `<div style="color:#ffff00;">[${timeStamp}] ${i18n[currentLang].cmdScan}</div>`;
+                    consoleBox.innerHTML += "<div style='color:#ffff00;'>[" + timeStamp + "] " + i18n[currentLang].cmdScan + "</div>";
                 } else if(val === 'bypass') {
-                    consoleBox.innerHTML += `<div style="color:#00ffff;">[${timeStamp}] ${i18n[currentLang].cmdBypass}</div>`;
+                    consoleBox.innerHTML += "<div style='color:#00ffff;'>[" + timeStamp + "] " + i18n[currentLang].cmdBypass + "</div>";
                 } else if(val !== "") {
-                    consoleBox.innerHTML += `<div>[${timeStamp}] Unknown command: ${val}</div>`;
+                    consoleBox.innerHTML += "<div>[" + timeStamp + "] Unknown command: " + val + "</div>";
                 }
                 
                 consoleBox.scrollTop = consoleBox.scrollHeight;
@@ -389,3 +345,4 @@
     </script>
 </body>
 </html>
+
