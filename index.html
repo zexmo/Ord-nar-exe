@@ -1,99 +1,476 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>ORD-NAR-EXE // SİBER OPERASYON MERKEZİ v6.0</title>
-    <style>
-        :root { --neon: #00ff66; --bg: #020202; }
-        body { background: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; overflow: hidden; margin: 0; }
-        #overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 5px solid var(--neon); }
-        .grid { display: grid; grid-template-columns: repeat(3, 150px); gap: 20px; }
-        button { background: none; border: 1px solid var(--neon); color: var(--neon); padding: 15px; cursor: pointer; font-weight: bold; }
-        
-        /* SATÜRN TASARIMI */
-        .system-container { display: flex; justify-content: center; align-items: center; height: 400px; perspective: 1000px; }
-        .planet { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #444, #000); border-radius: 50%; box-shadow: 0 0 50px var(--neon); }
-        .ring { position: absolute; border: 4px solid var(--neon); border-radius: 50%; transform: rotateX(75deg); animation: spin 5s linear infinite; }
-        .r1 { width: 200px; height: 200px; } .r2 { width: 250px; height: 250px; animation-duration: 8s; }
-        @keyframes spin { 100% { transform: rotateX(75deg) rotateZ(360deg); } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIBER-NET QUANTUM DÜĞÜMÜ</title>
 
-        /* PANELLER */
-        .ui-panel { border: 1px solid var(--neon); padding: 15px; margin: 10px; background: rgba(0,20,5,0.8); }
-        .data-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #333; margin-bottom: 5px; }
-    </style>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Consolas, monospace;
+}
+
+body{
+    background:black;
+    color:#00ff88;
+    overflow:hidden;
+}
+
+::selection{
+    background:#00ff88;
+    color:black;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:320px 1fr 320px;
+    height:100vh;
+    gap:10px;
+    padding:10px;
+}
+
+.panel{
+    border:1px solid #00ff88;
+    background:rgba(0,255,120,0.03);
+    box-shadow:0 0 10px #00ff88;
+}
+
+.header{
+    padding:10px;
+    border-bottom:1px solid #00ff88;
+    background:rgba(0,255,120,0.1);
+    font-weight:bold;
+}
+
+.left{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.right{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.info{
+    padding:15px;
+    line-height:2;
+}
+
+.info span{
+    float:right;
+    color:white;
+}
+
+.center{
+    display:flex;
+    flex-direction:column;
+}
+
+.globe-container{
+    flex:1;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+canvas{
+    width:100%;
+    height:100%;
+}
+
+.terminal{
+    height:180px;
+    border-top:1px solid #00ff88;
+    padding:10px;
+}
+
+#logs{
+    height:120px;
+    overflow:auto;
+    color:#00ff88;
+    margin-bottom:10px;
+}
+
+input{
+    width:100%;
+    background:black;
+    border:none;
+    outline:none;
+    color:#00ff88;
+    font-size:16px;
+}
+
+.bar{
+    margin:20px;
+}
+
+.bar-title{
+    margin-bottom:8px;
+}
+
+.progress{
+    width:100%;
+    height:14px;
+    border:1px solid #00ff88;
+}
+
+.fill{
+    height:100%;
+    background:#00ff88;
+    box-shadow:0 0 20px #00ff88;
+}
+
+.live{
+    padding:10px;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.topbar{
+    height:40px;
+    border-bottom:1px solid #00ff88;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+    color:#00ff88;
+    background:black;
+    box-shadow:0 0 15px #00ff88;
+}
+
+.grid-bg{
+    position:absolute;
+    width:200%;
+    height:200%;
+    background-image:
+    linear-gradient(rgba(0,255,120,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,120,0.08) 1px, transparent 1px);
+    background-size:50px 50px;
+    transform:rotateX(75deg);
+    animation:gridMove 20s linear infinite;
+}
+
+@keyframes gridMove{
+    0%{
+        transform:translateY(0) rotateX(75deg);
+    }
+    100%{
+        transform:translateY(50px) rotateX(75deg);
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- DİL SEÇİMİ -->
-    <div id="overlay">
-        <h1>SİSTEM ERİŞİMİ: ORD-NAR-EXE</h1>
-        <div class="grid">
-            <button onclick="boot('TR')">TÜRKÇE</button>
-            <button onclick="boot('EN')">ENGLISH</button>
-            <button onclick="boot('CN')">中文</button>
-            <button onclick="boot('FR')">FRANÇAIS</button>
-            <button onclick="boot('DE')">DEUTSCH</button>
-            <button onclick="boot('RU')">РУССКИЙ</button>
-        </div>
-    </div>
+<div class="topbar">
+<div>⚡ SİBER-NET KUANTUM DÜĞÜMÜ // ÇEVRİMİÇİ</div>
+<div id="time"></div>
+</div>
 
-    <!-- SES -->
-    <iframe id="yt-player" width="0" height="0" src="https://www.youtube.com/embed/7qmC1OJxNqw?autoplay=1&loop=1&playlist=7qmC1OJxNqw" frameborder="0"></iframe>
+<div class="container">
 
-    <main style="display:grid; grid-template-columns: 300px 1fr 300px; height: 100vh;">
-        <section class="ui-panel">
-            <div id="clock">SAAT: 00:00:00</div>
-            <div id="date">TARİH: 22.05.2026</div>
-            <div class="data-row"><span>IP ADRESİ:</span><span id="ip">185.228.168.95</span></div>
-            <div class="data-row"><span>KONUM:</span><span id="loc">ISTANBUL, TR</span></div>
-            <canvas id="map" width="250" height="200" style="background:#000; margin-top:20px;"></canvas>
-        </section>
+<div class="left">
 
-        <section class="system-container">
-            <div class="planet"></div>
-            <div class="ring r1"></div>
-            <div class="ring r2"></div>
-        </section>
+<div class="panel">
+<div class="header">🌍 KONUM VE HEDEF ANALİZİ</div>
 
-        <section class="ui-panel">
-            <div id="console" style="height:400px; overflow:hidden; font-size:12px;"></div>
-            <input type="text" id="cmd" placeholder="ROOT@ORDINAR:~#" style="width:100%; background:none; border:1px solid var(--neon); color:white;">
-        </section>
-    </main>
+<div class="info">
+SİSTEM SAATİ: <span id="clock"></span><br>
+IP ADRESİ: <span>185.228.168.95</span><br>
+PROXY SUNUCU: <span>Quantum Node 4</span><br>
+KOORDİNAT: <span>41.0082° N</span><br>
+ŞİFRELEME: <span style="color:red;">AES-256-GCM</span><br>
+VPN DURUMU: <span>TUNNEL_ACTIVE</span>
+</div>
 
-    <script>
-        function boot(lang) {
-            document.getElementById('overlay').style.display = 'none';
-            log("SİSTEM BAŞLATILIYOR... DİL: " + lang);
-            setInterval(updateTime, 1000);
-            drawMap();
-        }
+</div>
 
-        function log(msg) {
-            const consoleBox = document.getElementById('console');
-            consoleBox.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
-        }
+<div class="panel">
+<div class="header">📶 AĞ TRAFİĞİ</div>
 
-        function updateTime() {
-            document.getElementById('clock').innerText = "SAAT: " + new Date().toLocaleTimeString();
-        }
+<canvas id="chart" height="200"></canvas>
 
-        function drawMap() {
-            const c = document.getElementById('map').getContext('2d');
-            c.strokeStyle = '#00ff66';
-            c.strokeRect(10, 10, 230, 180);
-            c.beginPath(); c.arc(125, 100, 20, 0, Math.PI*2); c.stroke();
-        }
+<div class="info">
+DOWN: <span>2.48 Gbps</span><br>
+UP: <span>1.39 Gbps</span>
+</div>
 
-        // Terminal komutları (Daha fazla ekleyerek satır sayısını artırabilirsin)
-        document.getElementById('cmd').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                log("KOMUT YÜRÜTÜLDÜ: " + this.value);
-                this.value = '';
-            }
-        });
-    </script>
+</div>
+
+</div>
+
+<div class="panel center">
+
+<div class="header">🪐 MERKEZİ KÜTLE: SATURN_CORE_PROT</div>
+
+<div class="globe-container">
+
+<div class="grid-bg"></div>
+
+<canvas id="globe"></canvas>
+
+</div>
+
+<div class="terminal">
+
+<div id="logs">
+[16:04:44] ŞİFRELEME ÇÖZÜLÜYOR...<br>
+[16:04:45] BAĞLANTI KURULUYOR...<br>
+[16:04:46] SATURN CORE AKTİF.<br>
+</div>
+
+<input id="cmd" placeholder="root@cyber_node:~#">
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="panel">
+<div class="header">📊 SİSTEM KAYNAKLARI</div>
+
+<div class="bar">
+<div class="bar-title">CPU KULLANIMI</div>
+<div class="progress">
+<div class="fill" style="width:82%"></div>
+</div>
+</div>
+
+<div class="bar">
+<div class="bar-title">GPU ÇEKİRDEĞİ</div>
+<div class="progress">
+<div class="fill" style="width:63%"></div>
+</div>
+</div>
+
+<div class="bar">
+<div class="bar-title">RAM KAPASİTE</div>
+<div class="progress">
+<div class="fill" style="width:91%"></div>
+</div>
+</div>
+
+</div>
+
+<div class="panel">
+<div class="header">🟢 CANLI SİBER AKIŞ</div>
+
+<div class="live" id="liveFeed"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SES -->
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/7qmC1OJxNqw?autoplay=1&loop=1&playlist=7qmC1OJxNqw"
+frameborder="0"
+allow="autoplay">
+</iframe>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+
+function updateClock(){
+    const now=new Date();
+    document.getElementById("time").innerText=
+    "SYS_TIME: "+now.toLocaleTimeString();
+
+    document.getElementById("clock").innerText=
+    now.toLocaleTimeString();
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+45,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
+);
+
+const renderer=new THREE.WebGLRenderer({
+canvas:document.getElementById("globe"),
+alpha:true,
+antialias:true
+});
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+camera.position.z=4;
+
+const geometry=new THREE.SphereGeometry(
+1,
+64,
+64
+);
+
+const material=new THREE.MeshBasicMaterial({
+color:0x00ff88,
+wireframe:true
+});
+
+const globe=new THREE.Mesh(
+geometry,
+material
+);
+
+scene.add(globe);
+
+const ringGeometry=new THREE.TorusGeometry(
+1.7,
+0.02,
+16,
+100
+);
+
+const ringMaterial=new THREE.MeshBasicMaterial({
+color:0x00ff88
+});
+
+const ring=new THREE.Mesh(
+ringGeometry,
+ringMaterial
+);
+
+ring.rotation.x=Math.PI/2.5;
+
+scene.add(ring);
+
+const ring2=new THREE.Mesh(
+new THREE.TorusGeometry(2,0.01,16,100),
+ringMaterial
+);
+
+ring2.rotation.x=Math.PI/2.5;
+
+scene.add(ring2);
+
+function animate(){
+
+requestAnimationFrame(animate);
+
+globe.rotation.y+=0.003;
+
+ring.rotation.z+=0.01;
+
+ring2.rotation.z-=0.005;
+
+renderer.render(scene,camera);
+
+}
+
+animate();
+
+const liveFeed=document.getElementById("liveFeed");
+
+setInterval(()=>{
+
+const logs=[
+"ŞİFRELEME ÇÖZÜLÜYOR...",
+"VERİ AKIŞI BAŞLATILDI...",
+"HEDEF ANALİZ EDİLİYOR...",
+"QUANTUM BAĞLANTI STABİL.",
+"SATURN CORE OK.",
+"TCP 443 OPEN.",
+"UDP PAKETLERİ İZLENİYOR..."
+];
+
+const div=document.createElement("div");
+
+div.innerHTML=
+"["+new Date().toLocaleTimeString()+"] "
++logs[Math.floor(Math.random()*logs.length)];
+
+liveFeed.prepend(div);
+
+if(liveFeed.children.length>12){
+liveFeed.removeChild(liveFeed.lastChild);
+}
+
+},1500);
+
+document.getElementById("cmd")
+.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+const log=document.createElement("div");
+
+log.innerHTML=
+"[SYSTEM] KOMUT ÇALIŞTIRILDI: "
++this.value;
+
+document.getElementById("logs")
+.appendChild(log);
+
+this.value="";
+
+}
+
+});
+
+const chart=document.getElementById("chart");
+const ctx=chart.getContext("2d");
+
+let points=[];
+
+for(let i=0;i<50;i++){
+points.push(Math.random()*100);
+}
+
+function drawChart(){
+
+ctx.clearRect(0,0,chart.width,chart.height);
+
+ctx.strokeStyle="#00ff88";
+ctx.beginPath();
+
+points.forEach((p,i)=>{
+
+let x=i*6;
+let y=180-p;
+
+if(i===0){
+ctx.moveTo(x,y);
+}else{
+ctx.lineTo(x,y);
+}
+
+});
+
+ctx.stroke();
+
+points.shift();
+points.push(Math.random()*100);
+
+requestAnimationFrame(drawChart);
+
+}
+
+drawChart();
+
+</script>
+
 </body>
 </html>
-
 
