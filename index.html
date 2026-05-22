@@ -3,214 +3,370 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIBER-NET QUANTUM DÜĞÜMÜ</title>
+<title>ORDINAR // SATURN CORE</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Consolas, monospace;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Consolas, monospace;
 }
 
 body{
-    background:black;
-    color:#00ff88;
-    overflow:hidden;
+background:black;
+color:#00ff88;
+overflow:hidden;
 }
 
-::selection{
-    background:#00ff88;
-    color:black;
+/* TOPBAR */
+
+.topbar{
+height:40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+border-bottom:1px solid #00ff88;
+box-shadow:0 0 15px #00ff88;
+background:black;
+z-index:1000;
+position:relative;
 }
+
+/* LANGUAGE SCREEN */
+
+#languageOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:40px;
+z-index:999999;
+}
+
+.langTitle{
+font-size:60px;
+color:#00ff88;
+text-shadow:0 0 20px #00ff88;
+animation:flicker 1s infinite;
+}
+
+.langGrid{
+display:grid;
+grid-template-columns:repeat(3,220px);
+gap:20px;
+}
+
+.langGrid button{
+height:70px;
+background:black;
+border:1px solid #00ff88;
+color:#00ff88;
+font-size:18px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.langGrid button:hover{
+background:#00ff88;
+color:black;
+box-shadow:0 0 20px #00ff88;
+transform:scale(1.05);
+}
+
+@keyframes flicker{
+
+0%{opacity:1;}
+50%{opacity:0.5;}
+100%{opacity:1;}
+
+}
+
+/* BOOT TEXT */
+
+#bootText{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:70px;
+color:#00ff88;
+text-shadow:0 0 30px #00ff88;
+display:none;
+z-index:999999;
+animation:bootAnim 2s forwards;
+}
+
+@keyframes bootAnim{
+
+0%{
+opacity:0;
+transform:translate(-50%,-50%) scale(0.5);
+}
+
+100%{
+opacity:1;
+transform:translate(-50%,-50%) scale(1);
+}
+
+}
+
+/* MAIN GRID */
 
 .container{
-    display:grid;
-    grid-template-columns:320px 1fr 320px;
-    height:100vh;
-    gap:10px;
-    padding:10px;
+display:grid;
+grid-template-columns:320px 1fr 320px;
+height:calc(100vh - 40px);
+gap:10px;
+padding:10px;
 }
 
 .panel{
-    border:1px solid #00ff88;
-    background:rgba(0,255,120,0.03);
-    box-shadow:0 0 10px #00ff88;
+border:1px solid #00ff88;
+background:rgba(0,255,100,0.03);
+box-shadow:0 0 10px #00ff88;
+overflow:hidden;
 }
 
 .header{
-    padding:10px;
-    border-bottom:1px solid #00ff88;
-    background:rgba(0,255,120,0.1);
-    font-weight:bold;
+padding:10px;
+border-bottom:1px solid #00ff88;
+background:rgba(0,255,100,0.08);
+font-weight:bold;
 }
 
-.left{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.right{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+.left,.right{
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
 .info{
-    padding:15px;
-    line-height:2;
+padding:15px;
+line-height:2;
+font-size:15px;
 }
 
 .info span{
-    float:right;
-    color:white;
+float:right;
+color:white;
 }
 
+/* CENTER */
+
 .center{
-    display:flex;
-    flex-direction:column;
+display:flex;
+flex-direction:column;
 }
 
 .globe-container{
-    flex:1;
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+position:relative;
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
 }
 
-canvas{
-    width:100%;
-    height:100%;
-}
-
-.terminal{
-    height:180px;
-    border-top:1px solid #00ff88;
-    padding:10px;
-}
-
-#logs{
-    height:120px;
-    overflow:auto;
-    color:#00ff88;
-    margin-bottom:10px;
-}
-
-input{
-    width:100%;
-    background:black;
-    border:none;
-    outline:none;
-    color:#00ff88;
-    font-size:16px;
-}
-
-.bar{
-    margin:20px;
-}
-
-.bar-title{
-    margin-bottom:8px;
-}
-
-.progress{
-    width:100%;
-    height:14px;
-    border:1px solid #00ff88;
-}
-
-.fill{
-    height:100%;
-    background:#00ff88;
-    box-shadow:0 0 20px #00ff88;
-}
-
-.live{
-    padding:10px;
-    font-size:14px;
-    line-height:1.7;
-}
-
-.topbar{
-    height:40px;
-    border-bottom:1px solid #00ff88;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 20px;
-    color:#00ff88;
-    background:black;
-    box-shadow:0 0 15px #00ff88;
-}
+/* GRID */
 
 .grid-bg{
-    position:absolute;
-    width:200%;
-    height:200%;
-    background-image:
-    linear-gradient(rgba(0,255,120,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,120,0.08) 1px, transparent 1px);
-    background-size:50px 50px;
-    transform:rotateX(75deg);
-    animation:gridMove 20s linear infinite;
+position:absolute;
+width:200%;
+height:200%;
+background-image:
+linear-gradient(rgba(0,255,100,0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0,255,100,0.08) 1px, transparent 1px);
+
+background-size:50px 50px;
+transform:rotateX(75deg);
+animation:gridMove 20s linear infinite;
 }
 
 @keyframes gridMove{
-    0%{
-        transform:translateY(0) rotateX(75deg);
-    }
-    100%{
-        transform:translateY(50px) rotateX(75deg);
-    }
+
+0%{
+transform:translateY(0) rotateX(75deg);
 }
+
+100%{
+transform:translateY(60px) rotateX(75deg);
+}
+
+}
+
+/* TERMINAL */
+
+.terminal{
+height:200px;
+border-top:1px solid #00ff88;
+padding:10px;
+}
+
+#logs{
+height:130px;
+overflow:auto;
+font-size:14px;
+margin-bottom:10px;
+}
+
+input{
+width:100%;
+background:black;
+border:none;
+outline:none;
+color:#00ff88;
+font-size:16px;
+}
+
+/* BARS */
+
+.bar{
+margin:20px;
+}
+
+.progress{
+height:14px;
+border:1px solid #00ff88;
+margin-top:5px;
+}
+
+.fill{
+height:100%;
+background:#00ff88;
+box-shadow:0 0 20px #00ff88;
+}
+
+/* LIVE FEED */
+
+.live{
+padding:10px;
+font-size:14px;
+line-height:1.7;
+height:350px;
+overflow:auto;
+}
+
+canvas{
+width:100%;
+height:100%;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-<div>⚡ SİBER-NET KUANTUM DÜĞÜMÜ // ÇEVRİMİÇİ</div>
-<div id="time"></div>
+<!-- LANGUAGE SELECT -->
+
+<div id="languageOverlay">
+
+<div class="langTitle">ORDINAR SYSTEM</div>
+
+<div class="langGrid">
+
+<button onclick="setLanguage('tr')">TÜRKÇE</button>
+<button onclick="setLanguage('en')">ENGLISH</button>
+<button onclick="setLanguage('de')">DEUTSCH</button>
+<button onclick="setLanguage('fr')">FRANÇAIS</button>
+<button onclick="setLanguage('ru')">РУССКИЙ</button>
+<button onclick="setLanguage('cn')">中文</button>
+
 </div>
 
+</div>
+
+<!-- BOOT TEXT -->
+
+<div id="bootText"></div>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div>
+⚡ SİBER-NET KUANTUM DÜĞÜMÜ // ÇEVRİMİÇİ
+</div>
+
+<div id="time"></div>
+
+</div>
+
+<!-- MAIN -->
+
 <div class="container">
+
+<!-- LEFT -->
 
 <div class="left">
 
 <div class="panel">
-<div class="header">🌍 KONUM VE HEDEF ANALİZİ</div>
+
+<div class="header">
+🌍 KONUM VE HEDEF ANALİZİ [SECURE]
+</div>
 
 <div class="info">
-SİSTEM SAATİ: <span id="clock"></span><br>
-IP ADRESİ: <span>185.228.168.95</span><br>
-PROXY SUNUCU: <span>Quantum Node 4</span><br>
-KOORDİNAT: <span>41.0082° N</span><br>
-ŞİFRELEME: <span style="color:red;">AES-256-GCM</span><br>
-VPN DURUMU: <span>TUNNEL_ACTIVE</span>
+
+SİSTEM SAATİ:
+<span id="clock"></span><br>
+
+IP ADRESİ:
+<span>185.228.168.95</span><br>
+
+PROXY SUNUCU:
+<span>Quantum Node 4</span><br>
+
+KOORDİNAT:
+<span>41.0082° N</span><br>
+
+ŞİFRELEME:
+<span style="color:red;">AES-256-GCM</span><br>
+
+VPN DURUMU:
+<span>TUNNEL_ACTIVE</span>
+
 </div>
 
 </div>
 
 <div class="panel">
-<div class="header">📶 AĞ TRAFİĞİ</div>
+
+<div class="header">
+📶 AĞ TRAFİĞİ
+</div>
 
 <canvas id="chart" height="200"></canvas>
 
 <div class="info">
-DOWN: <span>2.48 Gbps</span><br>
-UP: <span>1.39 Gbps</span>
-</div>
+
+DOWN:
+<span>2.48 Gbps</span><br>
+
+UP:
+<span>1.39 Gbps</span>
 
 </div>
 
 </div>
+
+</div>
+
+<!-- CENTER -->
 
 <div class="panel center">
 
-<div class="header">🪐 MERKEZİ KÜTLE: SATURN_CORE_PROT</div>
+<div class="header">
+🪐 MERKEZİ KÜTLE: SATURN_CORE_PROT
+</div>
 
 <div class="globe-container">
 
@@ -223,9 +379,11 @@ UP: <span>1.39 Gbps</span>
 <div class="terminal">
 
 <div id="logs">
+
 [16:04:44] ŞİFRELEME ÇÖZÜLÜYOR...<br>
 [16:04:45] BAĞLANTI KURULUYOR...<br>
-[16:04:46] SATURN CORE AKTİF.<br>
+[16:04:46] SATURN CORE AKTİF...<br>
+
 </div>
 
 <input id="cmd" placeholder="root@cyber_node:~#">
@@ -234,27 +392,32 @@ UP: <span>1.39 Gbps</span>
 
 </div>
 
+<!-- RIGHT -->
+
 <div class="right">
 
 <div class="panel">
-<div class="header">📊 SİSTEM KAYNAKLARI</div>
+
+<div class="header">
+📊 SİSTEM KAYNAKLARI [LIVE]
+</div>
 
 <div class="bar">
-<div class="bar-title">CPU KULLANIMI</div>
+CPU KULLANIMI
 <div class="progress">
 <div class="fill" style="width:82%"></div>
 </div>
 </div>
 
 <div class="bar">
-<div class="bar-title">GPU ÇEKİRDEĞİ</div>
+GPU ÇEKİRDEĞİ
 <div class="progress">
 <div class="fill" style="width:63%"></div>
 </div>
 </div>
 
 <div class="bar">
-<div class="bar-title">RAM KAPASİTE</div>
+RAM KAPASİTE
 <div class="progress">
 <div class="fill" style="width:91%"></div>
 </div>
@@ -263,7 +426,10 @@ UP: <span>1.39 Gbps</span>
 </div>
 
 <div class="panel">
-<div class="header">🟢 CANLI SİBER AKIŞ</div>
+
+<div class="header">
+🟢 CANLI SİBER AKIŞ
+</div>
 
 <div class="live" id="liveFeed"></div>
 
@@ -273,28 +439,87 @@ UP: <span>1.39 Gbps</span>
 
 </div>
 
-<!-- SES -->
+<!-- MUSIC -->
+
 <iframe width="0" height="0"
 src="https://www.youtube.com/embed/7qmC1OJxNqw?autoplay=1&loop=1&playlist=7qmC1OJxNqw"
 frameborder="0"
 allow="autoplay">
 </iframe>
 
+<!-- THREE JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 
 <script>
 
-function updateClock(){
-    const now=new Date();
-    document.getElementById("time").innerText=
-    "SYS_TIME: "+now.toLocaleTimeString();
+/* LANGUAGE SYSTEM */
 
-    document.getElementById("clock").innerText=
-    now.toLocaleTimeString();
+const languages={
+
+tr:{
+welcome:"HOŞ GELDİN ORDINAR"
+},
+
+en:{
+welcome:"WELCOME ORDINAR"
+},
+
+de:{
+welcome:"WILLKOMMEN ORDINAR"
+},
+
+fr:{
+welcome:"BIENVENUE ORDINAR"
+},
+
+ru:{
+welcome:"ДОБРО ПОЖАЛОВАТЬ ORDINAR"
+},
+
+cn:{
+welcome:"欢迎 ORDINAR"
+}
+
+};
+
+function setLanguage(lang){
+
+document.getElementById("languageOverlay").style.display="none";
+
+const boot=document.getElementById("bootText");
+
+boot.innerText=languages[lang].welcome;
+
+boot.style.display="block";
+
+setTimeout(()=>{
+
+boot.style.display="none";
+
+},2500);
+
+}
+
+/* CLOCK */
+
+function updateClock(){
+
+const now=new Date();
+
+document.getElementById("time").innerText=
+"SYS_TIME: "+now.toLocaleTimeString();
+
+document.getElementById("clock").innerText=
+now.toLocaleTimeString();
+
 }
 
 setInterval(updateClock,1000);
+
 updateClock();
+
+/* THREE JS */
 
 const scene=new THREE.Scene();
 
@@ -311,12 +536,11 @@ alpha:true,
 antialias:true
 });
 
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
+renderer.setSize(window.innerWidth,window.innerHeight);
 
 camera.position.z=4;
+
+/* EARTH */
 
 const geometry=new THREE.SphereGeometry(
 1,
@@ -336,20 +560,23 @@ material
 
 scene.add(globe);
 
-const ringGeometry=new THREE.TorusGeometry(
-1.7,
-0.02,
-16,
-100
-);
+/* SATURN RINGS */
 
 const ringMaterial=new THREE.MeshBasicMaterial({
 color:0x00ff88
 });
 
 const ring=new THREE.Mesh(
-ringGeometry,
+
+new THREE.TorusGeometry(
+1.7,
+0.02,
+16,
+100
+),
+
 ringMaterial
+
 );
 
 ring.rotation.x=Math.PI/2.5;
@@ -357,13 +584,23 @@ ring.rotation.x=Math.PI/2.5;
 scene.add(ring);
 
 const ring2=new THREE.Mesh(
-new THREE.TorusGeometry(2,0.01,16,100),
+
+new THREE.TorusGeometry(
+2.2,
+0.01,
+16,
+100
+),
+
 ringMaterial
+
 );
 
 ring2.rotation.x=Math.PI/2.5;
 
 scene.add(ring2);
+
+/* ANIMATION */
 
 function animate(){
 
@@ -381,18 +618,21 @@ renderer.render(scene,camera);
 
 animate();
 
+/* LIVE FEED */
+
 const liveFeed=document.getElementById("liveFeed");
 
 setInterval(()=>{
 
 const logs=[
+
 "ŞİFRELEME ÇÖZÜLÜYOR...",
-"VERİ AKIŞI BAŞLATILDI...",
-"HEDEF ANALİZ EDİLİYOR...",
-"QUANTUM BAĞLANTI STABİL.",
-"SATURN CORE OK.",
 "TCP 443 OPEN.",
-"UDP PAKETLERİ İZLENİYOR..."
+"SATURN CORE OK.",
+"QUANTUM BAĞLANTI STABİL.",
+"VERİ AKIŞI BAŞLATILDI...",
+"HEDEF ANALİZ EDİLİYOR..."
+
 ];
 
 const div=document.createElement("div");
@@ -403,11 +643,17 @@ div.innerHTML=
 
 liveFeed.prepend(div);
 
-if(liveFeed.children.length>12){
-liveFeed.removeChild(liveFeed.lastChild);
+if(liveFeed.children.length>15){
+
+liveFeed.removeChild(
+liveFeed.lastChild
+);
+
 }
 
 },1500);
+
+/* TERMINAL */
 
 document.getElementById("cmd")
 .addEventListener("keydown",function(e){
@@ -429,13 +675,18 @@ this.value="";
 
 });
 
+/* NETWORK CHART */
+
 const chart=document.getElementById("chart");
+
 const ctx=chart.getContext("2d");
 
 let points=[];
 
 for(let i=0;i<50;i++){
+
 points.push(Math.random()*100);
+
 }
 
 function drawChart(){
@@ -443,17 +694,23 @@ function drawChart(){
 ctx.clearRect(0,0,chart.width,chart.height);
 
 ctx.strokeStyle="#00ff88";
+
 ctx.beginPath();
 
 points.forEach((p,i)=>{
 
-let x=i*6;
-let y=180-p;
+const x=i*6;
+
+const y=180-p;
 
 if(i===0){
+
 ctx.moveTo(x,y);
+
 }else{
+
 ctx.lineTo(x,y);
+
 }
 
 });
@@ -461,6 +718,7 @@ ctx.lineTo(x,y);
 ctx.stroke();
 
 points.shift();
+
 points.push(Math.random()*100);
 
 requestAnimationFrame(drawChart);
@@ -473,4 +731,3 @@ drawChart();
 
 </body>
 </html>
-
