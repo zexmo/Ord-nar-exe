@@ -1,0 +1,768 @@
+<!-- ========================= -->
+<!-- AŞAMA 1 -->
+<!-- ========================= -->
+
+<div id="overlay">
+
+<h1>ORDINAR SYSTEM</h1>
+
+<div class="grid">
+
+<button onclick="boot('HOŞ GELDİN ORDINAR')">TÜRKÇE</button>
+
+<button onclick="boot('WELCOME ORDINAR')">ENGLISH</button>
+
+<button onclick="boot('WILLKOMMEN ORDINAR')">DEUTSCH</button>
+
+<button onclick="boot('BIENVENUE ORDINAR')">FRANÇAIS</button>
+
+<button onclick="boot('ДОБРО ПОЖАЛОВАТЬ')">РУССКИЙ</button>
+
+<button onclick="boot('欢迎 ORDINAR')">中文</button>
+
+</div>
+
+</div>
+
+<div id="welcome"></div>
+
+<div class="stars"></div>
+
+<div class="topbar">
+
+<div>
+⚡ ORD-NAR-EXE
+</div>
+
+<div id="clock"></div>
+
+</div>
+
+<div class="panel leftPanel">
+
+<h2>GEO DATA</h2>
+
+IP: 185.228.168.95<br>
+LOCATION: ISTANBUL/TR<br>
+VPN: ACTIVE<br>
+STATUS: SECURE<br>
+
+</div>
+
+<div class="panel rightPanel">
+
+<h2>SYSTEM</h2>
+
+CPU: 82%<br>
+GPU: 63%<br>
+RAM: 91%<br>
+NETWORK: STABLE<br>
+
+</div>
+
+<canvas id="globe"></canvas>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:black;
+font-family:Consolas;
+color:#00ff88;
+}
+
+.stars{
+position:absolute;
+width:100%;
+height:100%;
+background:url('https://i.imgur.com/YKY28eT.jpg');
+background-size:cover;
+opacity:0.3;
+}
+
+#overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,220px);
+gap:20px;
+}
+
+.grid button{
+height:70px;
+background:black;
+border:1px solid #00ff88;
+color:#00ff88;
+font-size:20px;
+cursor:pointer;
+}
+
+#welcome{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:70px;
+display:none;
+z-index:9999;
+}
+
+.topbar{
+position:absolute;
+top:0;
+width:100%;
+height:45px;
+border-bottom:1px solid #00ff88;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+}
+
+.panel{
+position:absolute;
+top:80px;
+width:280px;
+height:300px;
+border:1px solid #00ff88;
+background:rgba(0,255,100,0.04);
+padding:20px;
+}
+
+.leftPanel{
+left:20px;
+}
+
+.rightPanel{
+right:20px;
+}
+
+#globe{
+position:absolute;
+width:100%;
+height:100%;
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+
+function boot(text){
+
+document.getElementById("overlay").style.display="none";
+
+const w=document.getElementById("welcome");
+
+w.innerText=text;
+
+w.style.display="block";
+
+setTimeout(()=>{
+
+w.style.display="none";
+
+},2000);
+
+}
+
+setInterval(()=>{
+
+document.getElementById("clock").innerText=
+new Date().toLocaleTimeString();
+
+},1000);
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+45,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
+);
+
+const renderer=new THREE.WebGLRenderer({
+canvas:document.getElementById("globe"),
+alpha:true
+});
+
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+camera.position.z=4;
+
+const geometry=new THREE.SphereGeometry(1.2,64,64);
+
+const texture=new THREE.TextureLoader().load(
+'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'
+);
+
+const material=new THREE.MeshStandardMaterial({
+map:texture
+});
+
+const earth=new THREE.Mesh(geometry,material);
+
+scene.add(earth);
+
+const light=new THREE.PointLight(0x00ff88,2);
+
+light.position.set(5,3,5);
+
+scene.add(light);
+
+const ringMaterial=new THREE.MeshBasicMaterial({
+color:0x00ff88
+});
+
+const ring=new THREE.Mesh(
+new THREE.TorusGeometry(1.8,0.02,16,100),
+ringMaterial
+);
+
+ring.rotation.x=Math.PI/2.3;
+
+scene.add(ring);
+
+function animate(){
+
+requestAnimationFrame(animate);
+
+earth.rotation.y+=0.002;
+
+ring.rotation.z+=0.01;
+
+renderer.render(scene,camera);
+
+}
+
+animate();
+
+</script>
+<!-- ========================= -->
+<!-- AŞAMA 2 -->
+<!-- ========================= -->
+
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/7qmC1OJxNqw?autoplay=1&loop=1&playlist=7qmC1OJxNqw"
+allow="autoplay">
+</iframe>
+
+<div id="terminal">
+
+<div id="logs"></div>
+
+<input id="cmd" placeholder="root@ordinar:~#">
+
+</div>
+
+<div id="feed">
+
+<h3>LIVE TRAFFIC</h3>
+
+<div id="feedLogs"></div>
+
+</div>
+
+<div id="statusDot"></div>
+
+<style>
+
+#terminal{
+
+position:absolute;
+
+left:50%;
+bottom:20px;
+
+transform:translateX(-50%);
+
+width:700px;
+height:220px;
+
+border:1px solid #00ff88;
+
+background:rgba(0,0,0,0.8);
+
+padding:15px;
+
+}
+
+#logs{
+
+height:150px;
+
+overflow:auto;
+
+line-height:1.8;
+
+}
+
+#cmd{
+
+width:100%;
+height:40px;
+
+background:black;
+
+border:1px solid #00ff88;
+
+color:#00ff88;
+
+}
+
+#feed{
+
+position:absolute;
+
+right:20px;
+bottom:20px;
+
+width:280px;
+height:220px;
+
+border:1px solid #00ff88;
+
+padding:15px;
+
+background:rgba(0,255,100,0.04);
+
+}
+
+#feedLogs{
+
+height:170px;
+
+overflow:auto;
+
+}
+
+#statusDot{
+
+position:absolute;
+
+top:14px;
+right:14px;
+
+width:14px;
+height:14px;
+
+background:#00ff88;
+
+border-radius:50%;
+
+animation:pulse 1s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.5);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+</style>
+
+<script>
+
+const feedLogs=document.getElementById("feedLogs");
+
+setInterval(()=>{
+
+const msgs=[
+
+"QUANTUM LINK ACTIVE",
+"SATELLITE CONNECTED",
+"DATA FLOW STABLE",
+"VPN SECURE",
+"ENCRYPTION OK"
+
+];
+
+const div=document.createElement("div");
+
+div.innerHTML=
+
+"["+new Date().toLocaleTimeString()+"] "
+
++
+
+msgs[Math.floor(Math.random()*msgs.length)];
+
+feedLogs.prepend(div);
+
+},1200);
+
+document.getElementById("cmd")
+.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+document.getElementById("logs").innerHTML+=
+
+"<div>[SYSTEM] "+this.value+"</div>";
+
+this.value="";
+
+}
+
+});
+
+</script>
+<!-- ========================= -->
+<!-- AŞAMA 3 -->
+<!-- ========================= -->
+
+<canvas id="network"></canvas>
+
+<div id="radar">
+
+<div class="line"></div>
+
+</div>
+
+<div id="kpiPanel">
+
+<div class="kpi">
+<div class="value">24</div>
+<div class="label">OPEN PORTS</div>
+</div>
+
+<div class="kpi">
+<div class="value">182</div>
+<div class="label">LIVE CONNECTIONS</div>
+</div>
+
+<div class="kpi">
+<div class="value red">HIGH</div>
+<div class="label">THREAT</div>
+</div>
+
+</div>
+
+<div id="securityPanel">
+
+<div class="sec green">
+FIREWALL ACTIVE
+</div>
+
+<div class="sec yellow">
+AES-256 ENCRYPTION
+</div>
+
+<div class="sec red">
+2 THREATS DETECTED
+</div>
+
+</div>
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+
+<style>
+
+#network{
+position:absolute;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
+#radar{
+
+position:absolute;
+
+left:20px;
+bottom:20px;
+
+width:220px;
+height:220px;
+
+border:1px solid #00ff88;
+
+border-radius:50%;
+
+overflow:hidden;
+
+}
+
+.line{
+
+position:absolute;
+
+width:50%;
+height:2px;
+
+background:#00ff88;
+
+top:50%;
+left:50%;
+
+transform-origin:left center;
+
+animation:spin 3s linear infinite;
+
+}
+
+@keyframes spin{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+#kpiPanel{
+
+position:absolute;
+
+bottom:20px;
+left:50%;
+
+transform:translateX(-50%);
+
+display:flex;
+
+gap:20px;
+
+}
+
+.kpi{
+
+width:180px;
+
+padding:20px;
+
+border:1px solid #00ff88;
+
+text-align:center;
+
+background:rgba(0,255,100,0.04);
+
+}
+
+.value{
+
+font-size:30px;
+
+}
+
+.label{
+
+opacity:0.7;
+
+}
+
+.red{
+color:red;
+}
+
+.yellow{
+color:gold;
+}
+
+.green{
+color:#00ff88;
+}
+
+#securityPanel{
+
+position:absolute;
+
+left:20px;
+top:420px;
+
+width:280px;
+
+padding:20px;
+
+border:1px solid #00ff88;
+
+background:rgba(0,255,100,0.04);
+
+}
+
+.sec{
+
+margin-bottom:20px;
+
+}
+
+.ring{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+border:1px solid rgba(0,255,100,0.3);
+
+border-radius:50%;
+
+}
+
+.ring1{
+
+width:400px;
+height:400px;
+
+animation:rotate1 12s linear infinite;
+
+}
+
+.ring2{
+
+width:600px;
+height:600px;
+
+animation:rotate2 18s linear infinite;
+
+}
+
+@keyframes rotate1{
+
+from{
+transform:translate(-50%,-50%) rotate(0deg);
+}
+
+to{
+transform:translate(-50%,-50%) rotate(360deg);
+}
+
+}
+
+@keyframes rotate2{
+
+from{
+transform:translate(-50%,-50%) rotate(360deg);
+}
+
+to{
+transform:translate(-50%,-50%) rotate(0deg);
+}
+
+}
+
+</style>
+
+<script>
+
+const network=document.getElementById("network");
+
+const ctx=network.getContext("2d");
+
+network.width=window.innerWidth;
+
+network.height=window.innerHeight;
+
+const nodes=[];
+
+for(let i=0;i<70;i++){
+
+nodes.push({
+
+x:Math.random()*network.width,
+
+y:Math.random()*network.height,
+
+vx:(Math.random()-0.5)*0.7,
+
+vy:(Math.random()-0.5)*0.7
+
+});
+
+}
+
+function drawNetwork(){
+
+ctx.clearRect(0,0,network.width,network.height);
+
+for(let i=0;i<nodes.length;i++){
+
+const a=nodes[i];
+
+a.x+=a.vx;
+
+a.y+=a.vy;
+
+if(a.x<0||a.x>network.width){
+a.vx*=-1;
+}
+
+if(a.y<0||a.y>network.height){
+a.vy*=-1;
+}
+
+ctx.beginPath();
+
+ctx.arc(a.x,a.y,2,0,Math.PI*2);
+
+ctx.fillStyle="#00ff88";
+
+ctx.fill();
+
+for(let j=i+1;j<nodes.length;j++){
+
+const b=nodes[j];
+
+const dist=Math.hypot(
+a.x-b.x,
+a.y-b.y
+);
+
+if(dist<130){
+
+ctx.strokeStyle=
+"rgba(0,255,100,"+
+(1-dist/130)*0.3+
+")";
+
+ctx.beginPath();
+
+ctx.moveTo(a.x,a.y);
+
+ctx.lineTo(b.x,b.y);
+
+ctx.stroke();
+
+}
+
+}
+
+}
+
+requestAnimationFrame(drawNetwork);
+
+}
+
+drawNetwork();
+
+</script>
