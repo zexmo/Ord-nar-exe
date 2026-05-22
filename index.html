@@ -190,14 +190,20 @@
         };
         let currentLang = 'tr';
         let audioCtx;
-        function playMatrixMusic() {
+                function playMatrixMusic() {
             try {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let mainTheme = new Audio("azer.mp3"); 
+                
+                // GitHub depona yüklediğin ordınar.mp3 dosyasını doğrudan bağlar
+                let mainTheme = new Audio("ordınar.mp3"); 
                 mainTheme.loop = true; 
                 mainTheme.volume = 0.65; 
-                mainTheme.play().catch(e => console.log("Ses calma izni bekleniyor..."));
+                
+                mainTheme.play().catch(e => {
+                    console.log("Tarayıcı otomatik ses engellemesini aşmak için tıklandı.");
+                });
 
+                // Sistem Bip Sinyalleri
                 setInterval(() => {
                     if(Math.random() > 0.45 && audioCtx) {
                         let beep = audioCtx.createOscillator();
@@ -248,8 +254,8 @@
 
         setInterval(() => {
             const timeStr = new Date().toTimeString().split(' ');
-            document.getElementById('top-timer').innerText = `SYS_TIME: ${timeStr[0]}`;
-            document.getElementById('lbl-time').innerText = timeStr[0];
+            document.getElementById('top-timer').innerText = `SYS_TIME: ${timeStr}`;
+            document.getElementById('lbl-time').innerText = timeStr;
         }, 1000);
 
         function startHardwareMetrics() {
@@ -345,4 +351,9 @@
     </script>
 </body>
 </html>
+
+
+    
+        
+
 
