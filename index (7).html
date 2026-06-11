@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XqrStore - Sistem Geri Yükleme</title>
+    <title>Wrox - Car Clips Gallery</title>
     <style>
-        /* --- BAŞLANGIÇ EKRANI --- */
+        /* --- BAŞLANGIÇ EKRANI (GÜVENLİ VE RAHAT HİSSETTİREN TASARIM) --- */
         body {
             margin: 0;
             padding: 0;
-            background-color: #030712;
+            background-color: #020617; /* Gece mavisi arka plan */
             color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,47 +22,55 @@
         .terminal-box {
             width: 90%;
             max-width: 600px;
-            background: #090d16;
-            border: 1px solid #1f2937;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            background: #0f172a;
+            border: 1px solid #0ea5e9; /* Güven veren açık mavi/turkuaz border */
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.15);
+            text-align: center;
         }
 
         .terminal-header {
-            color: #ef4444;
+            color: #10b981; /* Güvenli yeşil renk */
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .terminal-text {
-            color: #9ca3af;
+            color: #cbd5e1;
             font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            line-height: 1.7;
+            margin-bottom: 25px;
             text-align: left;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .terminal-text:last-of-type {
+            border-bottom: none;
+            margin-bottom: 30px;
         }
 
         .action-btn {
-            background: #ef4444;
+            background: #10b981; /* Güvenli yeşil buton */
             color: white;
             border: none;
-            padding: 14px 30px;
-            font-size: 1rem;
+            padding: 14px 35px;
+            font-size: 1.05rem;
             font-weight: bold;
             font-family: inherit;
             cursor: pointer;
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
             transition: all 0.2s;
         }
 
         .action-btn:hover {
-            background: #dc2626;
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.6);
+            background: #059669;
+            box-shadow: 0 0 25px rgba(5, 150, 105, 0.5);
         }
 
         /* --- JUMPSCARE (GLITCH) KATMANI (BAŞLANGIÇTA GİZLİ) --- */
@@ -117,107 +125,100 @@
 
         @keyframes strobeAnimation {
             0%, 100% { background-color: #000000; }
-            50% { background-color: #3b0712; } /* Koyu kan kırmızısı flaş */
+            50% { background-color: #3b0712; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Masum Görünümlü Terminal Arayüzü -->
+    <!-- Güvenli Görünümlü Multilang Bilgilendirme Arayüzü -->
     <div class="terminal-box" id="startMenu">
-        <div class="terminal-header">[!] KRİTİK ÇEKİRDEK HATASI</div>
+        <div class="terminal-header">WROX MEDIA SYSTEM</div>
+        
+        <!-- TÜRKÇE -->
         <div class="terminal-text">
-            XqrStore dosya dizininde bozulma tespit edildi. Ayrıştırılmamış veriler işletim sisteminizin önyükleme (boot) sektörünü tehdit ediyor.<br><br>
-            Sistem bütünlüğünü korumak ve güvenli modda yeniden başlatmak için aşağıdaki onarım butonunu tetikleyin.
+            <strong>TR:</strong> Wrox'un hazırladığı özel araba kliplerine hoş geldiniz. Bu bir uyarı değil, bilgilendirmedir. İçerideki araba kliplerini dilediğiniz gibi indirebilirsiniz. Bölge erişiminiz güvenli olarak onaylanmıştır.
         </div>
-        <button class="action-btn" onclick="tetikleJumpscare()">KODU ONAR VE REBOOT ET</button>
+
+        <!-- İNGİLİZCE -->
+        <div class="terminal-text">
+            <strong>EN:</strong> Welcome to the special car clips prepared by Wrox. This is not a warning, but an information. You can download the car clips inside as you wish. Your regional access is secured and confirmed.
+        </div>
+
+        <!-- RUSÇA -->
+        <div class="terminal-text">
+            <strong>RU:</strong> Добро пожаловать на эксклюзивные автомобильные клипы, подготовленные Wrox. Это не предупреждение, а информация. Вы можете скачивать любые видеоклипы внутри по своему желанию. Ваш доступ безопасен.
+        </div>
+
+        <button class="action-btn" onclick="tetikleJumpscare()">GALERİYİ AÇ / OPEN GALLERY</button>
     </div>
 
     <!-- Jumpscare Katmanı -->
     <div id="jumpscare-container">
         <div class="strobe-bg"></div>
         
-        <!-- Saf Kodla Çizilmiş Korkunç Dijital Yüz (SVG) -->
         <svg class="scary-face-svg" viewBox="0 0 200 200" xmlns="http://w3.org">
-            <!-- Kafatası İskeleti -->
             <path d="M40,80 Q40,20 100,20 Q160,20 160,80 Q160,130 140,150 L140,170 Q100,180 60,170 L60,150 Q40,130 40,80 Z" fill="#111" stroke="#ef4444" stroke-width="4"/>
-            <!-- Korkunç Kanlı Göz Çukurları -->
             <circle cx="70" cy="75" r="22" fill="#000" stroke="#ef4444" stroke-width="2"/>
             <circle cx="130" cy="75" r="22" fill="#000" stroke="#ef4444" stroke-width="2"/>
-            <!-- Parlayan Kırmızı Küçük Göz Bebekleri -->
             <circle cx="70" cy="75" r="5" fill="#ff0000">
                 <animate attributeName="r" values="3;7;3" dur="0.1s" repeatCount="indefinite"/>
             </circle>
             <circle cx="130" cy="75" r="5" fill="#ff0000">
                 <animate attributeName="r" values="3;7;3" dur="0.1s" repeatCount="indefinite"/>
             </circle>
-            <!-- Burun Boşluğu -->
             <polygon points="100,95 92,115 108,115" fill="#ef4444"/>
-            <!-- Ağız ve Dik dikişli Keskin Dişler -->
             <path d="M 60,140 Q 100,165 140,140" fill="none" stroke="#ef4444" stroke-width="5"/>
             <path d="M 70,135 L 70,150 M 85,138 L 85,155 M 100,140 L 100,158 M 115,138 L 115,155 M 130,135 L 130,150" stroke="#fff" stroke-width="3"/>
         </svg>
     </div>
 
-    <!-- Web Audio API için Glitch Sesi Üreteci (Harici ses dosyası indirmeye gerek bırakmaz) -->
+    <!-- Web Audio API için Glitch Sesi Üreteci -->
     <script>
         let audioCtx = null;
 
-        // Tarayıcı üzerinden sentetik, aşırı rahatsız edici dijital parazit ve çığlık (Glitch) sesi üreten fonksiyon
         function generateGlitchNoise() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            // Devasa parazit dalgası oluşturma (Beyaz Gürültü Altyapısı)
-            const bufferSize = audioCtx.sampleRate * 2; // 2 Saniyelik ses patlaması
+            const bufferSize = audioCtx.sampleRate * 2; 
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
             
             for (let i = 0; i < bufferSize; i++) {
-                // Matematiksel sert dalga kırılmaları (Glitch hissi verir)
                 data[i] = Math.random() * 2 - 1;
                 if (i % 100 < 30) {
-                    data[i] = Math.sin(i * 0.05) * 1.5; // Ani frekans patlamaları ekle
+                    data[i] = Math.sin(i * 0.05) * 1.5; 
                 }
             }
 
             const noiseNode = audioCtx.createBufferSource();
             noiseNode.buffer = buffer;
 
-            // Alçak ve Yüksek frekans filtreleri ekleyerek sesi kulak tırmalayıcı hale getiriyoruz
             const filter = audioCtx.createBiquadFilter();
             filter.type = "peaking";
             filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
             filter.Q.setValueAtTime(15, audioCtx.currentTime);
             filter.gain.setValueAtTime(25, audioCtx.currentTime);
 
-            // Sesi bağla ve patlat
             noiseNode.connect(filter);
             filter.connect(audioCtx.destination);
             noiseNode.start();
         }
 
         function tetikleJumpscare() {
-            // 1. Ekranı tam ekran moduna zorla
             const doc = document.documentElement;
             if (doc.requestFullscreen) doc.requestFullscreen();
             else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
             else if (doc.mozRequestFullScreen) doc.mozRequestFullScreen();
 
-            // 2. Arayüz geçişini sağla
             setTimeout(() => {
                 document.getElementById('startMenu').style.display = 'none';
                 document.getElementById('jumpscare-container').style.display = 'flex';
-                
-                // 3. Glitch ses algoritmasını çalıştır
                 generateGlitchNoise();
-                
-                // Sesi daha da bozmak için yarım saniye arayla ikinci bir parazit dalgası tetikle
-                setTimeout(() => { generateGlitchNoise(); }, 300);
-            }, 300);
+            }, 100);
         }
     </script>
-
 </body>
 </html>
